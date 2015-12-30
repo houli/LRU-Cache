@@ -5,15 +5,16 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) {
-        Cache cache = new LRUCache(16, 8, 1);
+        Cache cache = new Cache(16, 1, 8, Cache.ReplacementPolicy.LRU);
         try (InputStream stream = Main.class.getResourceAsStream("addresses.txt")) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             reader.lines().map(line -> Integer.parseInt(line, 16))
                 .forEach(address -> {
-                    System.out.println(cache.access(address));
+                    cache.access(address);
                 });
         } catch (IOException e) {
             e.printStackTrace();
         }
+        cache.printResults();
     }
 }
