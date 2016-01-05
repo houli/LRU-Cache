@@ -34,20 +34,22 @@ public class Cache {
 
     public boolean access(int address) {
         this.accesses++;
-        int setNumber = (address >> numOffsetBits) & mask(numSetBits);
-        int tag = address >> (numSetBits + numOffsetBits);
+        int setNumber = (address >> this.numOffsetBits) & mask(this.numSetBits);
+        int tag = address >> (this.numSetBits + this.numOffsetBits);
 
-        boolean hit = cacheSets[setNumber].access(tag);
+        boolean hit = this.cacheSets[setNumber].access(tag);
         if (hit) {
             this.hits++;
         }
         return hit;
     }
 
-    public void printResults() {
-        System.out.println("Hits: " + this.hits);
-        System.out.println("Accesses: " + this.accesses);
-        System.out.println("Hit rate: " + (double) this.hits / this.accesses);
+    public int getAccesses() {
+        return this.accesses;
+    }
+
+    public int getHits() {
+        return this.hits;
     }
 
     private int mask(int numBits) {
