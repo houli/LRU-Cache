@@ -14,16 +14,19 @@ class LRUCacheSet implements CacheSet {
 
     public boolean access(int tag) {
         boolean hit = false;
-        for (int t : this.tags) {
-            if (t == tag) {
+        for (int i = 0; i < this.tags.length; i++) {
+            if (tag == this.tags[i]) {
                 hit = true;
+                updateMatrix(i);
+                break;
             }
         }
         if (!hit) {
-            for (int i = 0; i < this.matrix[0].length; i++) {
+            for (int i = 0; i < this.matrix.length; i++) {
                 if (allZero(this.matrix[i])) {
                     updateMatrix(i);
-                    tags[i] = tag;
+                    this.tags[i] = tag;
+                    break;
                 }
             }
         }
@@ -40,9 +43,9 @@ class LRUCacheSet implements CacheSet {
     }
 
     private void updateMatrix(int index) {
-        for (int i = 0; i < matrix[0].length; i++) {
-            matrix[i][index] = 1;
-            matrix[index][i] = 0;
+        for (int i = 0; i < this.matrix.length; i++) {
+            this.matrix[index][i] = 1;
+            this.matrix[i][index] = 0;
         }
     }
 }
